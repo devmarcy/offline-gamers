@@ -1,10 +1,11 @@
 import requests
 import mw_api
 
+
 # function to collect data from BO4 API
-def bo4_api(platform, usern):
+def bo4_api(platform, bo4_id):
     url = "https://my.callofduty.com/api/papi-client/crm/cod/v2/title/bo4/platform/%s/gamer/%s/profile/" % (
-        platform, usern)
+        platform, bo4_id)
     user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                  'Chrome/35.0.1916.47 Safari/537.36 '
     headers = {
@@ -36,31 +37,20 @@ def bo4_api(platform, usern):
                   "-QgCpy91RENYrAyeTgb6igFqXXDZzdFFBAjCuNU923kwTxGS6KGh2bUHk3toYBiW8vUmGMQCv0X5d8FAMmhImOgC5IJBullAugAE.LWdQYIZGxB5FJvbut27b1w.Xk_F5I4RIgTTQxE9KR9FvnwoRALIfG_QCtqgIbEF1mPe9W6m5F_M0E7YEhB9_u0zW1biIJ1gfjOcUKkqD6YwjKnojqI3bBDBQvHl9QmWdDKi1RLcMxlaa03Umb0aFeWdKxcX3lG7Je09FaLxPpiK_Ot1En39T6RACd6GUhmAXckZILTOtUKK4pbUjI6GBy_QKD0xRNGLi3ZQPCANEOSgL2qA-LcQNP5aa3BVbphBREUdaF-ONqa3cGx9Qrj6zi1tf0X3m6bgRyzeEiJyZhSZoPopumaE0uc6bJkjK07XIrP1gPH2sqxSh6oBL2Ize6H_STfyFn3GyOtaqxbhM0t-3tRg47a1NlyBqjUGpzbj20KfvVJdO1fpd1XiDzzFqj1yeegPGv6FLgfcPoyva8vL2v40vwmjmf-EWmUSHhq8oqoICvSsRYCKgvsb-M3bdD0Et9loa112UR169lc2w9xvljbCODh780jkFw4L6sMogVvUiGJu8vj0OGMxZnwwofG4dKAXeXGinMTH5i6JF_Sl7k9KrCjG3Ij9rA3UFylZ76U.aTc-58SN1wfbXhH1vZQRzg; rtkn=eyJhbGciOiAiUlNBLU9BRVAiLCAiZW5jIjogIkExMjhDQkMtSFMyNTYiLCAia2lkIjogInVub18xIn0.H_RFSOIclb7gNZ8UwQYFk3KsGB_kIjb12ernpheOIoSZlHkKjVfDdvKGWzZnQbMi5f_98fCRoQl_5GQPOKdpJdFbIrtUrESb-0udhuc0JNfApRDocb06ZOOD1EKelh1xoab6aCAG-KyY5muyL2RG3aGowENWsRsiMpaIznMchpc.a7RTG86crE72z4aXpUjLvg.3MXYDWiEsL52YeKovMvwzLftviEL2f69YRyp0z-mNWbYvWYuzJS5rSaFd1W6ZdDiqA7XgIphfR1MpiFaqfweii0-vVNpW-WtiZvD8BNQcObMpNM7DO6wjBCavra12USmEgv7jYx2FhEEz8KkmtRUgfFQA5iJCnzoUptkvPPECxJlSxf4aBUjrmeHTk662PAU82LUhWt8kUFmtDfzqnQiNlZdc5gFTJsI3mq52bke_FfxLwj3IAMyAfzh53FyeAhM5lH12EFcvBc-GiUxc3TuIbu5fTAEvsHiqwsEYcy_HoKZ-giDwN1SrKeTKX2Gb398A6b-pYUO9SO0WFulQic7F40bH_8FQdBB93iZ5aDOMLshqTAcoCZvPkUdd_xiXbpuXu4lcNCyGcQlnsjKYXsUor8uQcRffi8ARO0q9LA-iOKJ00JYkWV8SMojef5j-6Di_liOACkbOPbBw0Xx8W3ZOmGeX098aniBM54S55cDdZDveMFZcpDtuQYcAfnDglAxBxFnx62WY8vR9a-8foWVKJeVB68Xm6pCaPp6s6KHdPRLEduJq2-T_3DWoEwtSS-_hm8-5oYZTaN52rTjtw-CIA.SvXszntJbbi7ZyCTahr_8g; ACT_SSO_REMEMBER_ME=MTQ0OTE2NTk5NDg2MjE1ODcwMDI6JDJhJDEwJGxNY2kvNVFDT2JWNkVWYk55RGxIdE83WnN1TDRrYzlsdVdPc3oxRWNHRlBtMVZnLzhOcGVp; ACT_SSO_EVENT=LOGIN_SUCCESS:1553245756744; pgacct=psn; CRM_BLOB=eyJ2ZXIiOjEsInBsYXQiOnsicCI6eyJ2IjowLCJ0Ijp7ImJvNCI6eyJtcCI6bnVsbCwieiI6bnVsbCwicHJlcyI6MC4wLCJzcCI6MC4wLCJsZXYiOjQwLjB9LCJ3d2lpIjp7Im1wIjpudWxsLCJ6IjpudWxsLCJwcmVzIjoxLjAsInNwIjowLjAsImxldiI6NDQuMH19fX19; agegate=; country=GB; umbrellaId=3306746010444912014; facebookId=true; psnId=true; twitchId=true; twitterId=true; youTubeId=true",
     }
     response = requests.get(url, headers=headers)
-    responsejson = response.json()
-    username = responsejson['data']['username']
-    ekia = responsejson['data']['mp']['lifetime']['all']['ekia']
-    deaths = responsejson['data']['mp']['lifetime']['all']['deaths']
-    ekiadRatio = round((responsejson['data']['mp']['lifetime']['all']['ekiadRatio']), 2)
-    winlossRatio = round((responsejson['data']['mp']['lifetime']['all']['wlRatio']), 2)
-    accuracy = round((responsejson['data']['mp']['lifetime']['all']['accuracy']), 2)
-    gamesPlayed = responsejson['data']['mp']['lifetime']['all']['totalGamesPlayed']
-    timePlayed = mw_api.convert_sec_to_day(responsejson['data']['mp']['lifetime']['all']['timePlayedTotal'])
-    level = responsejson['data']['mp']['level']
-    scorePerGame = responsejson['data']['mp']['lifetime']['all']['scorePerGame']
 
-    response_dict = {}
-    response_dict['Username'] = username
-    response_dict['EKIA'] = int(ekia)
-    response_dict['Deaths'] = int(deaths)
-    response_dict['EKIA/D'] = ekiadRatio
-    response_dict['Total Games Played'] = gamesPlayed
-    response_dict['Win Loss Ratio'] = str(winlossRatio) + '%'
-    response_dict['Accuracy'] = str(accuracy) + '%'
-    response_dict['Time Played'] = str(timePlayed)
-    response_dict['Level'] = int(level)
-    response_dict['Score Per Game'] = int(scorePerGame)
+    response_dict = {'Username': response.json()['data']['username'],
+                     'EKIA': int(response.json()['data']['mp']['lifetime']['all']['ekia']),
+                     'Deaths': int(response.json()['data']['mp']['lifetime']['all']['deaths']),
+                     'EKIA/D': round((response.json()['data']['mp']['lifetime']['all']['ekiadRatio']), 2),
+                     'Total Games Played': response.json()['data']['mp']['lifetime']['all']['totalGamesPlayed'],
+                     'Win Loss Ratio': str(
+                         round((response.json()['data']['mp']['lifetime']['all']['wlRatio']), 2)) + '%',
+                     'Accuracy': str(round((response.json()['data']['mp']['lifetime']['all']['accuracy']), 2)) + '%',
+                     'Time Played': str(
+                         mw_api.convert_sec_to_day(
+                             response.json()['data']['mp']['lifetime']['all']['timePlayedTotal'])),
+                     'Level': int(response.json()['data']['mp']['level']),
+                     'Score Per Game': int(response.json()['data']['mp']['lifetime']['all']['scorePerGame'])}
     return response_dict
 
 
-platform = "psn"
-usern = "marcypt"
