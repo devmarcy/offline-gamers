@@ -64,4 +64,3 @@ def bo4_api(platform, usern):
 
 platform = "psn"
 usern = "marcypt"
-# TODO: username kills deaths kd w/l ratio
