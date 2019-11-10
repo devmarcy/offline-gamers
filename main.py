@@ -21,6 +21,8 @@ def main():
         steam_id = request.form['Body'].lower().replace('csgo', '').strip()
         output = cs_go_api(steam_id)
         response.message(' '.join(output))
+
+
     if request.form['Body'].lower().__contains__('apex'):
         apex_id = request.form['Body'].lower().replace('apex', '').strip()
         platform = 'psn'
@@ -37,42 +39,65 @@ def main():
             apex_id = apex_id.replace('psn', '').strip()
         output = apex_legends_api(platform, apex_id)
         response.message(' '.join(output))
+
+
+    if request.form['Body'].lower().__contains__('overwatch'):
+        overwatch_id = request.form['Body'].lower().replace('overwatch', '').strip()
+        platform = 'psn'
+        if request.form['Body'].lower().__contains__('xbx'):
+            valid = True
+            platform = 'xbl'
+            overwatch_id = overwatch_id.replace('xbx', '').strip()
+        if request.form['Body'].lower().__contains__('pc'):
+            valid = True
+            platform = 'battlenet'
+            overwatch_id = overwatch_id.replace('pc', '').strip()
+        else:
+            valid = True
+            overwatch_id = overwatch_id.replace('psn', '').strip()
+        output = apex_legends_api(platform, overwatch_id)
+        response.message(' '.join(output))
+
+
     if request.form['Body'].lower().__contains__('bo4'):
-        bo4_id = request.form['Body'].lower().replace('bo4', '').strip()
+        mw_id = request.form['Body'].lower().replace('bo4', '').strip()
         platform = 'psn'
         if request.form['Body'].lower().__contains__('xbx'):
             valid = True
             platform = 'xbl'
-            bo4_id = bo4_id.replace('xbx', '').strip()
+            mw_id = mw_id.replace('xbx', '').strip()
         if request.form['Body'].lower().__contains__('pc'):
             valid = True
             platform = 'battle'
-            bo4_id = bo4_id.replace('pc', '').strip()
+            mw_id = mw_id.replace('pc', '').strip()
         else:
             valid = True
-            bo4_id = bo4_id.replace('psn', '').strip()
-        output = bo4_api(platform, bo4_id)
+            mw_id = mw_id.replace('psn', '').strip()
+        output = bo4_api(platform, mw_id)
         response.message(''.join(output))
+
+
     if request.form['Body'].lower().__contains__('mw'):
-        bo4_id = request.form['Body'].lower().replace('mw', '').strip()
+        print('MW')
+        mw_id = request.form['Body'].lower().replace('mw', '').strip()
+        print(mw_id)
         platform = 'psn'
         if request.form['Body'].lower().__contains__('xbx'):
             valid = True
             platform = 'xbl'
-            bo4_id = bo4_id.replace('xbx', '').strip()
+            mw_id = mw_id.replace('xbx', '').strip()
         if request.form['Body'].lower().__contains__('pc'):
             valid = True
-            platform = 'battle'
-            bo4_id = bo4_id.replace('pc', '').strip()
+            platform = 'battlenet'
+            mw_id = mw_id.replace('pc', '').strip()
         else:
             valid = True
-            bo4_id = bo4_id.replace('psn', '').strip()
-        output = bo4_api(platform, bo4_id)
+            mw_id = mw_id.replace('psn', '').strip()
+        output = mw_api(platform, mw_id)
         response.message(''.join(output))
     if not valid:
         response.message("Sorry but i don't seem to understand your request.")
     return str(response)
-
 
 
 def cs_go_api(steam_id):
@@ -221,25 +246,42 @@ def mw_api(platform, mw_id):
     output = ["{}'s MODERN WARFARE STATS:\n".format(mw_id.upper()), '{}\n'.format('-' * 40)]
     try:
         stats = {'Level': int(response.json()['data']['level']),
-                         'Kills': int(response.json()['data']['lifetime']['all']['properties']['kills']),
-                         'Deaths': int(response.json()['data']['lifetime']['all']['properties']['deaths']),
-                         'Win/Loss Ratio': round((response.json()['data']['lifetime']['all']['properties']['wlRatio']), 2),
-                         'K/D Ratio': round((response.json()['data']['lifetime']['all']['properties']['kdRatio']), 2),
-                         'Time Played': convert_sec_to_day(
-                             response.json()['data']['lifetime']['all']['properties']['timePlayedTotal']),
-                         'Games Played': int(response.json()['data']['lifetime']['all']['properties']['gamesPlayed']),
-                         'Games Won': int(response.json()['data']['lifetime']['all']['properties']['wins']),
-                         'Games Lost': int(response.json()['data']['lifetime']['all']['properties']['losses']),
-                         'Current Win Streak': int(
-                             response.json()['data']['lifetime']['all']['properties']['currentWinStreak']),
-                         'Headshots': int(response.json()['data']['lifetime']['all']['properties']['headshots']),
-                         'Accuracy': round((response.json()['data']['lifetime']['all']['properties']['accuracy']), 2)}
+                 'Kills': int(response.json()['data']['lifetime']['all']['properties']['kills']),
+                 'Deaths': int(response.json()['data']['lifetime']['all']['properties']['deaths']),
+                 'Win/Loss Ratio': round((response.json()['data']['lifetime']['all']['properties']['wlRatio']), 2),
+                 'K/D Ratio': round((response.json()['data']['lifetime']['all']['properties']['kdRatio']), 2),
+                 'Time Played': convert_sec_to_day(
+                     response.json()['data']['lifetime']['all']['properties']['timePlayedTotal']),
+                 'Games Played': int(response.json()['data']['lifetime']['all']['properties']['gamesPlayed']),
+                 'Games Won': int(response.json()['data']['lifetime']['all']['properties']['wins']),
+                 'Games Lost': int(response.json()['data']['lifetime']['all']['properties']['losses']),
+                 'Current Win Streak': int(
+                     response.json()['data']['lifetime']['all']['properties']['currentWinStreak']),
+                 'Headshots': int(response.json()['data']['lifetime']['all']['properties']['headshots']),
+                 'Accuracy': round((response.json()['data']['lifetime']['all']['properties']['accuracy']), 2)}
 
         for stat in stats:
             output.append('{}: {}\n'.format(stat, stats[stat]))
         return ''.join(output)
     except Exception:
         return ['{} on platform {} not found!'.format(mw_id, platform)]
+
+
+def overwatch_api(platform, overwatch_id):
+    headers = {'TRN-Api-Key': tracker_key}
+    response = requests.get(
+        'https://public-api.tracker.gg/v2/overwatch/standard/profile/{}/{}'.format(platform, overwatch_id),
+        headers=headers)
+    print(response.json())
+    try:
+        stats = response.json()['data']['segments'][0]['stats']
+        print(response.json()['data']['segments'])
+        output = ["{}'s OVERWATCH STATS:\n".format(overwatch_id.upper()), '{}\n'.format('-' * 40)]
+        for stat in stats:
+            output.append('{}: {}\n'.format(stats[stat]['displayName'], stats[stat]['displayValue']))
+        return ''.join(output)
+    except Exception:
+        return ['{} on platform {} not found!'.format(overwatch_id, platform)]
 
 
 def convert_sec_to_day(n):
@@ -256,4 +298,3 @@ def convert_sec_to_day(n):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
