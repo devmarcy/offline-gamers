@@ -54,3 +54,6 @@ def bo4_api(platform, bo4_id):
     return response_dict
 
 
+platform = "psn"
+usern = "marcypt"
+print(bo4_api(platform, usern)['EKIA'])
