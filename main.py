@@ -5,7 +5,6 @@ from twilio.rest import Client
 from config import *
 from lxml import html
 import requests
-import urllib.request, json
 
 client = Client(account_sid, auth_token)
 app = Flask(__name__)
@@ -16,12 +15,15 @@ def main():
     response = MessagingResponse()
     print(request.form)
     valid = False
+    if request.form['Body'] == 'LIST':
+        valid = True
+        response.message(
+            'Currently 6 Available Games:\nCS:GO (csgo ign)\nApex Legends (apex ign platform)\nOverwatch (overwatch ign platform)\nBlack Ops 4 (bo4 ign platform)\nModern Warfare(2019) (mw ign platform)\nFortnite (fortnite ign platform)')
     if request.form['Body'].lower().__contains__('csgo'):
         valid = True
         steam_id = request.form['Body'].lower().replace('csgo', '').strip()
         output = cs_go_api(steam_id)
         response.message(' '.join(output))
-
 
     if request.form['Body'].lower().__contains__('apex'):
         apex_id = request.form['Body'].lower().replace('apex', '').strip()
@@ -40,7 +42,6 @@ def main():
         output = apex_legends_api(platform, apex_id)
         response.message(' '.join(output))
 
-
     if request.form['Body'].lower().__contains__('overwatch'):
         overwatch_id = request.form['Body'].lower().replace('overwatch', '').strip()
         platform = 'psn'
@@ -57,7 +58,6 @@ def main():
             overwatch_id = overwatch_id.replace('psn', '').strip()
         output = apex_legends_api(platform, overwatch_id)
         response.message(' '.join(output))
-
 
     if request.form['Body'].lower().__contains__('bo4'):
         mw_id = request.form['Body'].lower().replace('bo4', '').strip()
@@ -76,7 +76,6 @@ def main():
         output = bo4_api(platform, mw_id)
         response.message(''.join(output))
 
-
     if request.form['Body'].lower().__contains__('mw'):
         print('MW')
         mw_id = request.form['Body'].lower().replace('mw', '').strip()
@@ -94,6 +93,23 @@ def main():
             valid = True
             mw_id = mw_id.replace('psn', '').strip()
         output = mw_api(platform, mw_id)
+        response.message(''.join(output))
+
+    if request.form['Body'].lower().__contains__('fortnite'):
+        fortnite_id = request.form['Body'].lower().replace('fortnite', '').strip()
+        platform = 'psn'
+        if request.form['Body'].lower().__contains__('xbx'):
+            valid = True
+            platform = 'xbl'
+            fortnite_id = fortnite_id.replace('xbx', '').strip()
+        if request.form['Body'].lower().__contains__('pc'):
+            valid = True
+            platform = 'pc'
+            fortnite_id = fortnite_id.replace('pc', '').strip()
+        else:
+            valid = True
+            fortnite_id = fortnite_id.replace('psn', '').strip()
+        output = fortnite_api(platform, fortnite_id)
         response.message(''.join(output))
     if not valid:
         response.message("Sorry but i don't seem to understand your request.")
@@ -282,6 +298,36 @@ def overwatch_api(platform, overwatch_id):
         return ''.join(output)
     except Exception:
         return ['{} on platform {} not found!'.format(overwatch_id, platform)]
+
+
+def fortnite_api(platform, fortnite_id):
+    url = "https://api.fortnitetracker.com/v1/profile/%s/%s" % (platform, fortnite_id)
+    headers = {
+        'TRN-Api-Key': tracker_key
+    }
+
+    response = requests.get(url, headers=headers)
+    responsejson = response.json()
+    try:
+        stats = {
+            'Top 5s': responsejson['lifeTimeStats'][0]['value'],
+            'Top 3s': responsejson['lifeTimeStats'][1]['value'],
+            'Top 10s': responsejson['lifeTimeStats'][3]['value'],
+            'Top 25s': responsejson['lifeTimeStats'][5]['value'],
+            'Score': responsejson['lifeTimeStats'][6]['value'],
+            'Matches Played': responsejson['lifeTimeStats'][7]['value'],
+            'Wins': responsejson['lifeTimeStats'][8]['value'],
+            'Win Percentage': responsejson['lifeTimeStats'][9]['value'],
+            'Kills': responsejson['lifeTimeStats'][10]['value'],
+            'K/D': responsejson['lifeTimeStats'][11]['value']
+        }
+        output = ["{}'s FORTNITE STATS:\n".format(fortnite_id.upper()), '{}\n'.format('-' * 40)]
+        for stat in stats:
+            output.append('{}: {}\n'.format(stat, stats[stat]))
+        return ''.join(output)
+    except Exception:
+        return ['{} on platform {} not found!'.format(fortnite_id, platform)]
+
 
 
 def convert_sec_to_day(n):

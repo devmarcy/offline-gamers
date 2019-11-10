@@ -26,7 +26,7 @@ def fortnite_api(platform, epic_name):
         'K/D': responsejson['lifeTimeStats'][11]['value']
     }
 
-    print response_dict
+    print (response_dict)
 
 fortnite_api("psn", "dksilv4")
 
