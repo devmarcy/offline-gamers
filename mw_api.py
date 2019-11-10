@@ -1,5 +1,6 @@
 import requests
 
+
 # Changes seconds to days
 def convert_sec_to_day(n):
     day = n // (24 * 3600)
@@ -16,6 +17,7 @@ def convert_sec_to_day(n):
     return (str(int(day)) + "d " + str(int(hour)) + "hours " +
             str(int(minutes)) + "minutes " +
             str(int(seconds)) + "seconds")
+
 
 # Function to get data from MW API
 def mw_api(platform, usern):
@@ -52,37 +54,21 @@ def mw_api(platform, usern):
                   "-QgCpy91RENYrAyeTgb6igFqXXDZzdFFBAjCuNU923kwTxGS6KGh2bUHk3toYBiW8vUmGMQCv0X5d8FAMmhImOgC5IJBullAugAE.LWdQYIZGxB5FJvbut27b1w.Xk_F5I4RIgTTQxE9KR9FvnwoRALIfG_QCtqgIbEF1mPe9W6m5F_M0E7YEhB9_u0zW1biIJ1gfjOcUKkqD6YwjKnojqI3bBDBQvHl9QmWdDKi1RLcMxlaa03Umb0aFeWdKxcX3lG7Je09FaLxPpiK_Ot1En39T6RACd6GUhmAXckZILTOtUKK4pbUjI6GBy_QKD0xRNGLi3ZQPCANEOSgL2qA-LcQNP5aa3BVbphBREUdaF-ONqa3cGx9Qrj6zi1tf0X3m6bgRyzeEiJyZhSZoPopumaE0uc6bJkjK07XIrP1gPH2sqxSh6oBL2Ize6H_STfyFn3GyOtaqxbhM0t-3tRg47a1NlyBqjUGpzbj20KfvVJdO1fpd1XiDzzFqj1yeegPGv6FLgfcPoyva8vL2v40vwmjmf-EWmUSHhq8oqoICvSsRYCKgvsb-M3bdD0Et9loa112UR169lc2w9xvljbCODh780jkFw4L6sMogVvUiGJu8vj0OGMxZnwwofG4dKAXeXGinMTH5i6JF_Sl7k9KrCjG3Ij9rA3UFylZ76U.aTc-58SN1wfbXhH1vZQRzg; rtkn=eyJhbGciOiAiUlNBLU9BRVAiLCAiZW5jIjogIkExMjhDQkMtSFMyNTYiLCAia2lkIjogInVub18xIn0.H_RFSOIclb7gNZ8UwQYFk3KsGB_kIjb12ernpheOIoSZlHkKjVfDdvKGWzZnQbMi5f_98fCRoQl_5GQPOKdpJdFbIrtUrESb-0udhuc0JNfApRDocb06ZOOD1EKelh1xoab6aCAG-KyY5muyL2RG3aGowENWsRsiMpaIznMchpc.a7RTG86crE72z4aXpUjLvg.3MXYDWiEsL52YeKovMvwzLftviEL2f69YRyp0z-mNWbYvWYuzJS5rSaFd1W6ZdDiqA7XgIphfR1MpiFaqfweii0-vVNpW-WtiZvD8BNQcObMpNM7DO6wjBCavra12USmEgv7jYx2FhEEz8KkmtRUgfFQA5iJCnzoUptkvPPECxJlSxf4aBUjrmeHTk662PAU82LUhWt8kUFmtDfzqnQiNlZdc5gFTJsI3mq52bke_FfxLwj3IAMyAfzh53FyeAhM5lH12EFcvBc-GiUxc3TuIbu5fTAEvsHiqwsEYcy_HoKZ-giDwN1SrKeTKX2Gb398A6b-pYUO9SO0WFulQic7F40bH_8FQdBB93iZ5aDOMLshqTAcoCZvPkUdd_xiXbpuXu4lcNCyGcQlnsjKYXsUor8uQcRffi8ARO0q9LA-iOKJ00JYkWV8SMojef5j-6Di_liOACkbOPbBw0Xx8W3ZOmGeX098aniBM54S55cDdZDveMFZcpDtuQYcAfnDglAxBxFnx62WY8vR9a-8foWVKJeVB68Xm6pCaPp6s6KHdPRLEduJq2-T_3DWoEwtSS-_hm8-5oYZTaN52rTjtw-CIA.SvXszntJbbi7ZyCTahr_8g; ACT_SSO_REMEMBER_ME=MTQ0OTE2NTk5NDg2MjE1ODcwMDI6JDJhJDEwJGxNY2kvNVFDT2JWNkVWYk55RGxIdE83WnN1TDRrYzlsdVdPc3oxRWNHRlBtMVZnLzhOcGVp; ACT_SSO_EVENT=LOGIN_SUCCESS:1553245756744; pgacct=psn; CRM_BLOB=eyJ2ZXIiOjEsInBsYXQiOnsicCI6eyJ2IjowLCJ0Ijp7ImJvNCI6eyJtcCI6bnVsbCwieiI6bnVsbCwicHJlcyI6MC4wLCJzcCI6MC4wLCJsZXYiOjQwLjB9LCJ3d2lpIjp7Im1wIjpudWxsLCJ6IjpudWxsLCJwcmVzIjoxLjAsInNwIjowLjAsImxldiI6NDQuMH19fX19; agegate=; country=GB; umbrellaId=3306746010444912014; facebookId=true; psnId=true; twitchId=true; twitterId=true; youTubeId=true",
     }
     response = requests.get(url, headers=headers)
-    responsejson = response.json()
-    username = responsejson['data']['username']
-    level = responsejson['data']['level']
-    kills = responsejson['data']['lifetime']['all']['properties']['kills']
-    deaths = responsejson['data']['lifetime']['all']['properties']['deaths']
-    wlRatio = round((responsejson['data']['lifetime']['all']['properties']['wlRatio']), 2)
-    kdRatio = round((responsejson['data']['lifetime']['all']['properties']['kdRatio']), 2)
-    timePlayed = convert_sec_to_day(responsejson['data']['lifetime']['all']['properties']['timePlayedTotal'])
-    gamesPlayed = responsejson['data']['lifetime']['all']['properties']['gamesPlayed']
-    gamesWon = responsejson['data']['lifetime']['all']['properties']['wins']
-    gamesLost = responsejson['data']['lifetime']['all']['properties']['losses']
-    currentWinStreak = responsejson['data']['lifetime']['all']['properties']['currentWinStreak']
-    headshots = responsejson['data']['lifetime']['all']['properties']['headshots']
-    accuracy = round((responsejson['data']['lifetime']['all']['properties']['accuracy']), 2)
+    response_dict = {'Level': int(response.json()['data']['level']),
+                     'Kills': int(response.json()['data']['lifetime']['all']['properties']['kills']),
+                     'Deaths': int(response.json()['data']['lifetime']['all']['properties']['deaths']),
+                     'Win/Loss Ratio': round((response.json()['data']['lifetime']['all']['properties']['wlRatio']), 2),
+                     'K/D Ratio': round((response.json()['data']['lifetime']['all']['properties']['kdRatio']), 2),
+                     'Time Played': convert_sec_to_day(
+                         response.json()['data']['lifetime']['all']['properties']['timePlayedTotal']),
+                     'Games Played': int(response.json()['data']['lifetime']['all']['properties']['gamesPlayed']),
+                     'Games Won': int(response.json()['data']['lifetime']['all']['properties']['wins']),
+                     'Games Lost': int(response.json()['data']['lifetime']['all']['properties']['losses']),
+                     'Current Win Streak': int(
+                         response.json()['data']['lifetime']['all']['properties']['currentWinStreak']),
+                     'Headshots': int(response.json()['data']['lifetime']['all']['properties']['headshots']),
+                     'Accuracy': round((response.json()['data']['lifetime']['all']['properties']['accuracy']), 2)}
 
-    response_dict = {}
-    response_dict['Username'] = username
-    response_dict['Level'] = int(level)
-    response_dict['Kills'] = int(kills)
-    response_dict['Deaths'] = int(deaths)
-    response_dict['Win/Loss Ratio'] = wlRatio
-    response_dict['K/D Ratio'] = kdRatio
-    response_dict['Time Played'] = timePlayed
-    response_dict['Games Played'] = int(gamesPlayed)
-    response_dict['Games Won'] = int(gamesWon)
-    response_dict['Games Lost'] = int(gamesLost)
-    response_dict['Current Win Streak'] = int(currentWinStreak)
-    response_dict['Headshots'] = int(headshots)
-    response_dict['Accuracy'] = accuracy
+    return response_dict
 
-    return(response_dict)
-
-
-
+print(mw_api('psn','ytdksilv4'))
